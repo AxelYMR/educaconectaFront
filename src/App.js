@@ -21,7 +21,7 @@ function App() {
   
   
   const getEmpleados = () =>{
-    Axios.get("http://150.230.37.144:3000/empleados").then((response)=>{
+    Axios.get("http://129.159.33.229:3000/empleados").then((response)=>{
       setEmpleados(response.data);
     }).catch(error => {
       console.error('Error en la solicitud:', error);
@@ -30,7 +30,7 @@ function App() {
   getEmpleados();
 
   const insertar = () =>{
-    Axios.post("http://150.230.37.144:3000/create",{
+    Axios.post("http://129.159.33.229:3000/create",{
       manager:manager,
       departamento:departamento,
       puesto:puesto,
@@ -61,7 +61,7 @@ function App() {
   }
 
   const update = () =>{
-    Axios.put("http://150.230.37.144:3000/update",{
+    Axios.put("http://129.159.33.229:3000/update",{
       id:id,
       manager:manager,
       departamento:departamento,
@@ -78,7 +78,7 @@ function App() {
   }
 
   const deleteEmple = (val) =>{
-    Axios.delete(`http://150.230.37.144:3000/delete/${val.id_empleado}`).then(()=>{
+    Axios.delete(`http://129.159.33.229:3000/delete/${val.id_empleado}`).then(()=>{
       getEmpleados();
       limpiarCampos();
     });

@@ -8,8 +8,7 @@ const Footer = () => {
           <div className="container">
             <p>&copy;Educaconecta</p>
             <p>
-              <a href="/privacy" className="text-white mx-2">Política de Privacidad</a> | 
-              <a href="/terms" className="text-white mx-2">Términos y Condiciones</a>
+              <p className="text-white mx-2">Online Training</p> 
             </p>
           </div>
       </footer>

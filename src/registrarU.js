@@ -5,23 +5,23 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Header from './commons/Header';
 import Footer from './commons/Footer';
 
-function App() { //En este componente se definen las variables.
+function RegistrarU() { //En este componente se definen las variables de nombre.
   const [nombre,setNombre]= useState("");//variable donde se guardara el nombre ingresado en el formulario
-  const [apellido,setApellido]= useState(""); //variable donde se guardara el apellido ingresado en el formulario
-  const [contrasenia,setContrasenia]= useState(""); //variable donde se guardara la contraseña ingresada en el formulario
-  const [correo,setCorreo]= useState(); //variable donde se guardara el correo ingresado en el formulario
+  const [apellido,setApellido]= useState(""); //varaible donde se guarda ek apelido
+  const [contrasenia,setContrasenia]= useState(""); //variable donde se guarda la contraseña
+  const [correo,setCorreo]= useState();
 
   const insertar = () =>{ //Funcion para mandar a llamar al backend para insertar los datos en la base de datos.
     Axios.post("http://localhost:3001/createU",{
-      correo:correo, //Se mandan los datos ingresados en el formulario.
-      nombre:nombre,  
+      nombre:nombre,
+      correo:correo,
       apellido:apellido,
       contrasenia:contrasenia
-    }).then(()=>{ //Se manda un mensaje de alerta.
-      alert("Usuario Registrado"); //Alerta de Usuario Registrado.
+    }).then(()=>{
+      alert("Usuario Registrado"); //Alerta de Nombre Registrado.
     });
   }
-  
+
   return (
     <div className="background">
       <div className='navbar navbar-light header-container'> 
@@ -29,10 +29,11 @@ function App() { //En este componente se definen las variables.
       </div> 
       <div className="container">
         <div className="container"> 
-          <div className="card-header h4 text-muted text-center">
+          <div className="card-header h3 text-muted text-center">
             Registrar Usuario:
           </div>
         </div>
+        <br/>
         <div className="card-body">
         <div className="input-group mb-3">
           <span className="input-group-text" id="basic-addon1">Correo:</span>
@@ -40,7 +41,7 @@ function App() { //En este componente se definen las variables.
             onChange={(event) => {
               setNombre(event.target.value);
             }}
-          className="form-control" placeholder="Ingrese su Correo" aria-label="Username" aria-describedby="basic-addon1"/>
+          className="form-control" placeholder="Ingrese el Correo" aria-label="Username" aria-describedby="basic-addon1"/>
         </div>
         <div className="input-group mb-3">
           <span className="input-group-text" id="basic-addon1">Nombre:</span>
@@ -61,7 +62,7 @@ function App() { //En este componente se definen las variables.
         </div>
         <div className="input-group mb-3">
           <span className="input-group-text" id="basic-addon1">Contraseña:</span>
-          <input type="password" value={contrasenia}
+          <input type="text" value={contrasenia}
             onChange={(event) => {
               setContrasenia(event.target.value);
             }} 
@@ -82,11 +83,11 @@ function App() { //En este componente se definen las variables.
         </label>
       </div>
       </div>
-          <div className="container btn">
-            {  
-              <button className='btn btn-success' onClick={insertar}>CREAR USUARIO</button>
-            }
-          </div>
+        <div className="container btn">
+          {  
+            <button className='btn btn-success' onClick={insertar}>CREAR USUARIO</button>
+          }
+        </div>
       </div>
       <br/>
       <div>
@@ -96,4 +97,4 @@ function App() { //En este componente se definen las variables.
   );
 }
 
-export default App;
+export default RegistrarU;

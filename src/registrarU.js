@@ -9,7 +9,7 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
   const [nombre,setNombre]= useState("");//variable donde se guardara el nombre ingresado en el formulario
   const [apellido,setApellido]= useState(""); //varaible donde se guarda ek apelido
   const [contrasenia,setContrasenia]= useState(""); //variable donde se guarda la contraseña
-  const [correo,setCorreo]= useState();
+  const [correo,setCorreo]= useState("");
 
   const insertar = () =>{ //Funcion para mandar a llamar al backend para insertar los datos en la base de datos.
     Axios.post("http://localhost:3001/createU",{
@@ -22,6 +22,13 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
     });
   }
 
+  const validateAndInsert = () => {
+    if (!nombre || !apellido || !contrasenia || !correo) {
+      alert("Todos los campos deben estar llenos");
+      return;
+    }
+    insertar();
+  }
   return (
     <div className="background">
       <div className='navbar navbar-light header-container'> 
@@ -85,7 +92,7 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
       </div>
         <div className="container btn">
           {  
-            <button className='btn btn-success' onClick={insertar}>CREAR USUARIO</button>
+            <button className='btn btn-success' onClick={validateAndInsert}>CREAR USUARIO</button>
           }
         </div>
       </div>

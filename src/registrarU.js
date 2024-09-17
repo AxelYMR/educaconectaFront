@@ -10,13 +10,16 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
   const [apellido,setApellido]= useState(""); //varaible donde se guarda ek apelido
   const [contrasenia,setContrasenia]= useState(""); //variable donde se guarda la contraseña
   const [correo,setCorreo]= useState("");
+  const [edad,setEdad]= useState("");
+
 
   const insertar = () =>{ //Funcion para mandar a llamar al backend para insertar los datos en la base de datos.
     Axios.post("http://localhost:3001/createU",{
       nombre:nombre,
       correo:correo,
       apellido:apellido,
-      contrasenia:contrasenia
+      contrasenia:contrasenia,
+      edad:edad
     }).then(()=>{
       alert("Usuario Registrado"); //Alerta de Nombre Registrado.
     });
@@ -74,7 +77,15 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
               setContrasenia(event.target.value);
             }} 
           className="form-control" placeholder="La contraseña debe incluir almenos 8 caracteres" aria-label="Username" aria-describedby="basic-addon1"/>
-        </div>                 
+        </div>
+        <div className="input-group mb-3">
+          <span className="input-group-text" id="basic-addon1">Edad:</span>
+          <input type="number" value={edad}
+            onChange={(event) => {
+              setEdad(event.target.value);
+            }} 
+          className="form-control" placeholder="Inserta tu Edad" aria-label="Username" aria-describedby="basic-addon1"/>
+        </div>                      
         </div>
         <div className="container">
       <div class="form-check">
@@ -90,9 +101,9 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
         </label>
       </div>
       </div>
-        <div className="container btn">
+        <div className="container text-center">
           {  
-            <button className='btn btn-success' onClick={validateAndInsert}>CREAR USUARIO</button>
+            <button className='btn btn-primary' onClick={validateAndInsert}>CREAR USUARIO</button>
           }
         </div>
       </div>

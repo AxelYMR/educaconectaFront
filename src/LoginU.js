@@ -42,11 +42,11 @@ function LoginU() { //En este componente se definen las variables.
         <br/>
         <div className="container text-center">
             {  
-              <button className='btn btn-success'>Alumno</button>
+              <button className='btn btn-primary'>Alumno</button>
               
             }
             {  
-              <button className='btn btn-success'>Docentes</button>
+              <button className='btn btn-primary'>Docentes</button>
             }
         </div>
         <br/>

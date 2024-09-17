@@ -1,10 +1,10 @@
 import React from 'react';
-import './loginU.css';
+import './LoginU.css';
 import { useState } from "react";	
 import Axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Header from '../commons/Header';
-import Footer from '../commons/Footer';
+import Header from './commons/Header';
+import Footer from './commons/Footer';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -31,7 +31,8 @@ function LoginU() { //En este componente se definen las variables.
     <div className="background">
       <div className='navbar navbar-light header-container'> 
         <Header/>
-      </div> 
+      </div>
+      <br/> 
       <div className="container">
         <div className="container"> 
           <div className="card-header h4 text-muted text-center">
@@ -39,7 +40,7 @@ function LoginU() { //En este componente se definen las variables.
           </div>
         </div>
         <br/>
-        <div className="container btn">
+        <div className="container text-center">
             {  
               <button className='btn btn-success'>Alumno</button>
               
@@ -48,7 +49,6 @@ function LoginU() { //En este componente se definen las variables.
               <button className='btn btn-success'>Docentes</button>
             }
         </div>
-        <br/>
         <br/>
         <div className="card-body">
         <div className="input-group mb-3">
@@ -68,15 +68,17 @@ function LoginU() { //En este componente se definen las variables.
           className="form-control" placeholder="La contraseña debe incluir almenos 8 caracteres" aria-label="Username" aria-describedby="basic-addon1"/>
         </div>                 
         </div>
-        <div className="container btn">
+        <div className="container text-center">
             {  
-                <button className='btn btn-success' onClick={buscar}>Log In</button>
+                <button className='btn btn-primary' onClick={buscar}>Log In</button>
             }
             {  
-                <button className='btn btn-success' onClick={goToRegistrarU}>Crear Usuario</button>
+                <button className='btn btn-primary' onClick={goToRegistrarU}>Crear Usuario</button>
             }
         </div>
     </div>
+      <br/>
+      <br/>
       <br/>
       <div>
         <Footer/>

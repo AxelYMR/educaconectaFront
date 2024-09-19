@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from "react";
+import React, {useState, useEffect} from 'react';
 import Axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Header from './commons/Header';
@@ -11,7 +11,45 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
   const [contrasenia,setContrasenia]= useState(""); //variable donde se guarda la contraseña
   const [correo,setCorreo]= useState("");
   const [edad,setEdad]= useState("");
+  const [nombreF,setNombreF]= useState("");//variable donde se guardara el nombre ingresado en el formulario
+  const [apellidoF,setApellidoF]= useState(""); //varaible donde se guarda ek apelido
+  const [contraseniaF,setContraseniaF]= useState(""); //variable donde se guarda la contraseña
+  const [correoF,setCorreoF]= useState("");
+  const [edadF,setEdadF]= useState("");
+  const [isValid, setIsValid] = useState(false);
 
+  const handleNombreFChange = (event) =>{
+    setNombreF(event.target.value);
+  };
+
+  const handleApellidoFChange = (event) =>{
+    setApellidoF(event.target.value);
+  };
+
+  const handleContraseniaFChange = (event) =>{
+    setContraseniaF(event.target.value);
+  };
+
+  const handleCorreoFChange = (event) =>{
+    setCorreoF(event.target.value);
+  };
+
+  const handleEdadFChange = (event) =>{
+    setEdadF(event.target.value);
+  };
+
+  const validateForm = () => {
+    if (nombreF.trim() === "" || apellidoF.trim() === "" || contraseniaF.trim() === "" || correoF.trim() === "" ) {
+      setIsValid(false);
+      
+    } else{
+      setIsValid(true);
+    }
+  };
+
+  useEffect(() => {
+    validateForm();
+  }, [nombreF, apellidoF, contraseniaF, correoF]);
 
   const insertar = () =>{ //Funcion para mandar a llamar al backend para insertar los datos en la base de datos.
     Axios.post("http://localhost:3001/createU",{
@@ -47,45 +85,59 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
         <div className="card-body">
         <div className="input-group mb-3">
           <span className="input-group-text" id="basic-addon1">Correo:</span>
-          <input type="text" value={nombre}
-            onChange={(event) => {
-              setNombre(event.target.value);
-            }}
-          className="form-control" placeholder="Ingrese el Correo" aria-label="Username" aria-describedby="basic-addon1"/>
+          <input 
+            type="text" 
+            value={correoF}
+            onChange={handleCorreoFChange}
+            placeholder="Ingrese el Correo"
+            className="form-control"
+            aria-label="Username" 
+            aria-describedby="basic-addon1"/>
         </div>
         <div className="input-group mb-3">
           <span className="input-group-text" id="basic-addon1">Nombre:</span>
-          <input type="text" value={correo}
-            onChange={(event) => {
-              setCorreo(event.target.value);
-            }} 
-          className="form-control" placeholder="Ingrese Su Nombre" aria-label="Username" aria-describedby="basic-addon1"/>
-        </div>
-        
+          <input 
+            type="text" 
+            value={nombreF}
+            onChange={handleNombreFChange}
+            placeholder="Ingrese su Nombre"
+            className="form-control"
+            aria-label="Username" 
+            aria-describedby="basic-addon1"/>
+          </div>
         <div className="input-group mb-3">
           <span className="input-group-text" id="basic-addon1">Apellidos:</span>
-          <input type="text" value={apellido}
-            onChange={(event) => {
-              setApellido(event.target.value);
-            }} 
-          className="form-control" placeholder="Ingrese Su apellido" aria-label="Username" aria-describedby="basic-addon1"/>
-        </div>
+          <input 
+            type="text" 
+            value={apellidoF}
+            onChange={handleApellidoFChange}
+            placeholder="Ingrese su Apellido"
+            className="form-control"
+            aria-label="Username" 
+            aria-describedby="basic-addon1"/>
+          </div>
         <div className="input-group mb-3">
           <span className="input-group-text" id="basic-addon1">Contraseña:</span>
-          <input type="text" value={contrasenia}
-            onChange={(event) => {
-              setContrasenia(event.target.value);
-            }} 
-          className="form-control" placeholder="La contraseña debe incluir almenos 8 caracteres" aria-label="Username" aria-describedby="basic-addon1"/>
-        </div>
+          <input 
+            type="password" 
+            value={contraseniaF}
+            onChange={handleContraseniaFChange}
+            placeholder="Ingrese su Contraseña"
+            className="form-control"
+            aria-label="Password" 
+            aria-describedby="basic-addon1"/>
+          </div>
         <div className="input-group mb-3">
           <span className="input-group-text" id="basic-addon1">Edad:</span>
-          <input type="number" value={edad}
-            onChange={(event) => {
-              setEdad(event.target.value);
-            }} 
-          className="form-control" placeholder="Inserta tu Edad" aria-label="Username" aria-describedby="basic-addon1"/>
-        </div>                      
+          <input 
+            type="number" 
+            value={edadF}
+            onChange={handleEdadFChange}
+            placeholder="Ingrese su edad"
+            className="form-control"
+            aria-label="Age" 
+            aria-describedby="basic-addon1"/>
+          </div>                      
         </div>
         <div className="container">
       <div class="form-check">

@@ -1,5 +1,6 @@
-.background{
+.bg{
     background-color: #201e43;
     background-size: cover;
     background-position: center;
+    margin: auto;
   }

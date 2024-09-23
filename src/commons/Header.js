@@ -7,7 +7,7 @@ const Header = () => {
     <div>
         <nav>
             <div className="header-container">
-                <img src="favicon.ico" alt="" width="90" height="90"/>
+                <img src="favicon.ico" alt="" width="150" height="90"/>
             </div>
         </nav>
     </div>

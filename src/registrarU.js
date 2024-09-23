@@ -10,46 +10,84 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
   const [apellido,setApellido]= useState(""); //varaible donde se guarda ek apelido
   const [contrasenia,setContrasenia]= useState(""); //variable donde se guarda la contraseña
   const [correo,setCorreo]= useState("");
-  const [edad,setEdad]= useState("");
-  const [nombreF,setNombreF]= useState("");//variable donde se guardara el nombre ingresado en el formulario
-  const [apellidoF,setApellidoF]= useState(""); //varaible donde se guarda ek apelido
-  const [contraseniaF,setContraseniaF]= useState(""); //variable donde se guarda la contraseña
-  const [correoF,setCorreoF]= useState("");
-  const [edadF,setEdadF]= useState("");
+  const [matricula,setMatricula]= useState("");
   const [isValid, setIsValid] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [selectedRole, setSelectedRole] = useState('alumno');
 
-  const handleNombreFChange = (event) =>{
-    setNombreF(event.target.value);
+  const handleRadioChange = (event) => {
+    setSelectedRole(event.target.id);
   };
 
-  const handleApellidoFChange = (event) =>{
-    setApellidoF(event.target.value);
+  const handleNombreChange = (event) =>{
+    setNombre(event.target.value);
   };
 
-  const handleContraseniaFChange = (event) =>{
-    setContraseniaF(event.target.value);
+  const handleApellidoChange = (event) =>{
+    setApellido(event.target.value);
   };
 
-  const handleCorreoFChange = (event) =>{
-    setCorreoF(event.target.value);
+  const handleContraseniaChange = (event) =>{
+    setContrasenia(event.target.value);
   };
 
-  const handleEdadFChange = (event) =>{
-    setEdadF(event.target.value);
+  const handleCorreoChange = (event) =>{
+    setCorreo(event.target.value);
+  };
+
+  const handleMatriculaChange = (event) =>{
+    setMatricula(event.target.value);
+  };
+
+
+  const DocenteComponent = () => {
+    return <div>
+          
+          <div className="input-group mb-3">
+            <span className="input-group-text" id="basic-addon1">Matricula de Docente:</span>
+            <input 
+              type="text" 
+              placeholder="Ingrese su Matricula"
+              className="form-control"
+              aria-label="Username" 
+              aria-describedby="basic-addon1"/>
+          </div>
+          <div className="input-group mb-3">
+            <span className="input-group-text" id="basic-addon1">Especialidad:</span>
+            <input 
+              type="text" 
+              placeholder="Ingrese su especialidad"
+              className="form-control"
+              aria-label="Username" 
+              aria-describedby="basic-addon1"/>
+          </div>
+          <div className="input-group mb-3">
+            <span className="input-group-text" id="basic-addon1">Materia:</span>
+            <input 
+              type="text" 
+              placeholder="Ingrese la Materia"
+              className="form-control"
+              aria-label="Username" 
+              aria-describedby="basic-addon1"/>
+          </div>
+    </div>;
   };
 
   const validateForm = () => {
-    if (nombreF.trim() === "" || apellidoF.trim() === "" || contraseniaF.trim() === "" || correoF.trim() === "" ) {
-      setIsValid(false);
-      
-    } else{
-      setIsValid(true);
-    }
+    let formErrors = {};
+    if (nombre.trim() === "") formErrors.nombre = "El nombre es obligatorio";
+    if (apellido.trim() === "") formErrors.apellido = "El apellido es obligatorio";
+    if (contrasenia.trim() === "") formErrors.contrasenia = "La contraseña es obligatoria";
+    if (correo.trim() === "") formErrors.correo = "El correo es obligatorio";
+    if (matricula.trim() === "") formErrors.correo = "la matricula es obligatoria";
+
+    setErrors(formErrors);
+    setIsValid(Object.keys(formErrors).length === 0);
   };
 
   useEffect(() => {
     validateForm();
-  }, [nombreF, apellidoF, contraseniaF, correoF]);
+  }, [nombre, apellido, contrasenia, correo, matricula]);
 
   const insertar = () =>{ //Funcion para mandar a llamar al backend para insertar los datos en la base de datos.
     Axios.post("http://localhost:3001/createU",{
@@ -57,7 +95,6 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
       correo:correo,
       apellido:apellido,
       contrasenia:contrasenia,
-      edad:edad
     }).then(()=>{
       alert("Usuario Registrado"); //Alerta de Nombre Registrado.
     });
@@ -70,6 +107,7 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
     }
     insertar();
   }
+
   return (
     <div className="background">
       <div className='navbar navbar-light header-container'> 
@@ -83,75 +121,79 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
         </div>
         <br/>
         <div className="card-body">
+          {errors.nombre && <div className="alertas">*{errors.correo}</div>}
         <div className="input-group mb-3">
           <span className="input-group-text" id="basic-addon1">Correo:</span>
           <input 
             type="text" 
-            value={correoF}
-            onChange={handleCorreoFChange}
+            value={correo}
+            onChange={handleCorreoChange}
             placeholder="Ingrese el Correo"
             className="form-control"
             aria-label="Username" 
             aria-describedby="basic-addon1"/>
         </div>
+          {errors.nombre && <div className="alertas">*{errors.nombre}</div>}
         <div className="input-group mb-3">
           <span className="input-group-text" id="basic-addon1">Nombre:</span>
           <input 
             type="text" 
-            value={nombreF}
-            onChange={handleNombreFChange}
+            value={nombre}
+            onChange={handleNombreChange}
             placeholder="Ingrese su Nombre"
             className="form-control"
             aria-label="Username" 
             aria-describedby="basic-addon1"/>
           </div>
-        <div className="input-group mb-3">
+          <div className="alertas">  
+            {errors.apellido && <div className="alertas">*{errors.apellido}</div>}
+          </div>
+          <div className="input-group mb-3">
           <span className="input-group-text" id="basic-addon1">Apellidos:</span>
           <input 
             type="text" 
-            value={apellidoF}
-            onChange={handleApellidoFChange}
+            value={apellido}
+            onChange={handleApellidoChange}
             placeholder="Ingrese su Apellido"
             className="form-control"
             aria-label="Username" 
             aria-describedby="basic-addon1"/>
           </div>
-        <div className="input-group mb-3">
+          <div className="alertas">  
+            {errors.contrasenia && <div className="alertas">*{errors.contrasenia}</div>}
+          </div>
+          <div className="input-group mb-3">
           <span className="input-group-text" id="basic-addon1">Contraseña:</span>
           <input 
             type="password" 
-            value={contraseniaF}
-            onChange={handleContraseniaFChange}
+            value={contrasenia}
+            onChange={handleContraseniaChange}
             placeholder="Ingrese su Contraseña"
             className="form-control"
             aria-label="Password" 
             aria-describedby="basic-addon1"/>
-          </div>
-        <div className="input-group mb-3">
-          <span className="input-group-text" id="basic-addon1">Edad:</span>
-          <input 
-            type="number" 
-            value={edadF}
-            onChange={handleEdadFChange}
-            placeholder="Ingrese su edad"
-            className="form-control"
-            aria-label="Age" 
-            aria-describedby="basic-addon1"/>
-          </div>                      
+            
+          </div>  
         </div>
-        <div className="container">
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked/>
-        <label class="form-check-label" for="flexRadioDefault1">
-          Alumno.
-        </label>
+      <div className="container">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="alumno" id="alumno" checked={selectedRole==="alumno" } 
+           onChange={handleRadioChange}/>
+          <label class="form-check-label" for="alumno">
+            Alumno.
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="docente" id="docente" checked={selectedRole==="docente"}
+           onChange={handleRadioChange}/>
+          <label class="form-check-label" for="docente">
+            Docente.
+          </label>
+        </div>
       </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"/>
-        <label class="form-check-label" for="flexRadioDefault2">
-          Docente.
-        </label>
-      </div>
+      <br/>
+      <div className="container">
+        {selectedRole === 'docente' && <DocenteComponent />}
       </div>
         <div className="container text-center">
           {  

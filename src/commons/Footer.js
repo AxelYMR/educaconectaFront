@@ -5,7 +5,7 @@ import "./Footer.css";
 const Footer = () => {
     return (
         <div>
-        <footer className="bg-dark text-white text-center py-3 mt-auto">
+        <footer className="bg text-white text-center py-3 mt-auto">
           <div className="container">
             <p>&copy;Educaconecta</p>
             <p>

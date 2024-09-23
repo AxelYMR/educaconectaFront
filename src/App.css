@@ -20,5 +20,13 @@
   background-size: cover;
   background-position: center;
 }
+.alertas{
+  width:auto ; 
+  height: auto;
+  margin: 0;
+  font-style: italic;
+  color: rgb(0, 26, 255);
+  justify-content: right;
+}
 
 

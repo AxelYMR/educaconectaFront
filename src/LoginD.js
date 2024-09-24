@@ -26,7 +26,7 @@ function LoginD() { //En este componente se definen las variables.
   const validateForm = () => {
     let formErrors = {};
     if (matricula.trim() === "") formErrors.matricula = "La matricula es obligatoria";
-    if (contrasena.length < 8) formErrors.contrasena = "La contraseña debe tener al menos 8 caracteres";
+    if (contrasena.length < 8) formErrors.contrasena = "La contraseña debe tener al menos 8 caracteres y menos de 20";
 
     setErrors(formErrors);
     setIsValid(Object.keys(formErrors).length === 0);
@@ -48,16 +48,12 @@ function LoginD() { //En este componente se definen las variables.
         }
         }).then(response =>{ //Se manda un mensaje de alerta.
           if (response.data.length === 0) { // Verifica si la respuesta está vacía.
-            alert("No se encontraron datos con las credenciales proporcionadas");
-            console.log(matricula);
-            console.log(contrasena);
-            console.log(response.data);
+            alert("Campos Incorrectos porfavor revise los campos");
           } else {
             goToHome();
           }
         }).catch(error => {
           console.error(error);
-          alert("Ocurrió un error al buscar los datos");
         });
     }
   }
@@ -71,11 +67,10 @@ function LoginD() { //En este componente se definen las variables.
     };
 
     const goToLoginU = () => {
-        navigate('/');
-      };
+        navigate('/');  
+    };
 
   return (
-
     <div className="background">
       <div className='navbar navbar-light header-container'> 
         <Header/>
@@ -90,8 +85,7 @@ function LoginD() { //En este componente se definen las variables.
         <br/>
         <div className="container text-center">
             {  
-              <button className='btn btn-primary' onClick={goToLoginU}>Alumno</button>
-              
+              <button className='btn btn-primary' onClick={goToLoginU}>Alumno</button>    
             }
             {  
               <button className='btn btn-primary'>Docentes</button>

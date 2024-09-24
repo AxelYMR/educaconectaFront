@@ -7,16 +7,18 @@ import Footer from './commons/Footer';
 import { useNavigate } from 'react-router-dom';
 
 
-function RegistrarU() { //En este componente se definen las variables de nombre.
+function RegistrarUD() { //En este componente se definen las variables de nombre.
   const [nombre,setNombre]= useState("");//variable donde se guardara el nombre ingresado en el formulario
   const [apellido,setApellido]= useState(""); //varaible donde se guarda ek apelido
   const [contrasena,setContrasena]= useState(""); //variable donde se guarda la contraseña
   const [correo,setCorreo]= useState("");
   const [especialidad,setEspecialidad]= useState("");
+  const [matricula,setMatricula]= useState("");
+  const [materia,setMateria]= useState(""); 
   const [isValid, setIsValid] = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const [selectedRole, setSelectedRole] = useState('alumno');
+  const [selectedRole, setSelectedRole] = useState('docente');
 
   const handleRadioChange = (event) => {
     setSelectedRole(event.target.id);
@@ -40,6 +42,14 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
 
   const handleEspecialidadChange = (event) =>{
     setEspecialidad(event.target.value);
+  };
+
+  const handleMatriculaChange = (event) =>{
+    setMatricula(event.target.value);
+  };
+
+  const handleMateriaChange = (event) =>{
+    setMateria(event.target.value);
   };
 
   const validateForm = () => {
@@ -73,42 +83,56 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
     }else if (correo.length > 50) {
           formErrors.correo = "El formato de especialidad es invalido";
     }
-  
+
+    if (matricula.trim() === "") {
+        formErrors.especialidad = "la especialidad es obligatoria";
+    }else if (matricula.length > 20) {
+          formErrors.matricula = "El formato de matricula es invalido";
+    }
+
+    if (materia.trim() === "") {
+        formErrors.materia = "la Materia a impartir es obligatoria";
+    }else if (materia.length > 40) {
+          formErrors.materia = "El formato de materia es invalido";
+    }
+
     setErrors(formErrors);
     setIsValid(Object.keys(formErrors).length === 0);
   };
 
   useEffect(() => {
       validateForm();
-  }, [nombre, apellido, contrasena, correo,especialidad,especialidad]);
+  }, [nombre, apellido, contrasena, correo,especialidad,materia,matricula,especialidad]);
 
-  
-  const insertar = () =>{ //Funcion para mandar a llamar al backend para insertar los datos en la base de datos.
-    Axios.post("http://localhost:3001/createU",{
+
+  const insertarD = () =>{ //Funcion para mandar a llamar al backend para insertar los datos en la base de datos.
+    Axios.post("http://localhost:3001/createD",{
       nombre:nombre,
       correo:correo,
       apellido:apellido,
       contrasena:contrasena,
-      especialidad:especialidad
+      especialidad:especialidad,
+      materia:materia,
+      matricula:matricula
     }).then(()=>{
       alert("Registrado con Exito"); //Alerta de usuario Registrado.
-      goToLoginU();
+      goToLoginD();
     });
   }
-
-  const goToLoginU = () => {
-      navigate('/');
+  
+  const goToLoginD = () => {
+    navigate('/loginD');
   };
-
-  const goToRegistrarUD = () => {
-    navigate('/registrarUD');
+  const goToRegistrarU = () => {
+    navigate('/registrarU');
   };
   
+
   const handleSubmit = () => {
     if(isValid) {
-        insertar();
+        insertarD();
     }else{
-      alert("Datos Incorrectos, Por Favor Revise los Campos");
+        alert("Datos Incorrectos, Por Favor Revise los Campos");
     }
   };
   
@@ -176,7 +200,6 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
             className="form-control"
             aria-label="Password" 
             aria-describedby="basic-addon1"/>
-            
           </div>
           {errors.especialidad && <div className="alertas">*{errors.especialidad}</div>}
           <div className="input-group mb-3">
@@ -191,6 +214,32 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
             aria-describedby="basic-addon1"/>         
           </div>  
         </div>
+        <div>
+          {errors.matricula && <div className="alertas">*{errors.matricula}</div>}
+          <div className="input-group mb-3">
+            <span className="input-group-text">Matricula de Docente:</span>
+            <input 
+              type="text" 
+              value={matricula}
+              onChange={handleMatriculaChange}
+              placeholder="Ingrese su Matricula de Docente"
+              className="form-control"
+              aria-label="Username" 
+              aria-describedby="basic-addon1"/>
+          </div>
+          {errors.materia && <div className="alertas">*{errors.materia}</div>}
+          <div className="input-group mb-3">
+            <span className="input-group-text">Materia:</span>
+            <input 
+              type="text" 
+              value={materia}
+              onChange={handleMateriaChange}
+              placeholder="Ingrese su Materia a Impartir"
+              className="form-control"
+              aria-label="Username" 
+              aria-describedby="basic-addon1"/>
+          </div>
+    </div>
       <div className="container">
         <div class="form-check">
           <input class="form-check-input" type="radio" name='alumno' id='alumno' checked={selectedRole==='alumno' } 
@@ -209,9 +258,7 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
       </div>
       <br/>
       <div className="container">
-        {selectedRole === 'docente' && 
-        goToRegistrarUD()
-        }
+        {selectedRole === 'alumno' && goToRegistrarU()}
       </div>
         <div className="container text-center">
           {  
@@ -227,4 +274,4 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
   );
 }
 
-export default RegistrarU;
+export default RegistrarUD;

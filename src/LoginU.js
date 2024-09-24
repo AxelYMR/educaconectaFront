@@ -25,14 +25,14 @@ function LoginU() { //En este componente se definen las variables.
 
   const validateForm = () => {
     let formErrors = {};
-    if (correo.trim() === "") {
-      formErrors.correo = "El correo es obligatorio";
-    } else if (!correo.endsWith("@gmail.com")) {
-      formErrors.correo = "El correo debe terminar con @gmail.com";
+    if (contrasena.length < 8 || contrasena.length > 20) {
+      formErrors.contrasena = "La contraseña debe tener al menos 8 caracteres y menos de 20";
     }
-  
-    if (contrasena.length < 8) {
-      formErrors.contrasena = "La contraseña debe tener al menos 8 caracteres";
+    
+    if (correo.trim() === "" || correo.length < 11 || correo.length > 50) {
+      formErrors.correo = "El correo es obligatorio";
+    } else if (!correo.endsWith("@gmail.com") || correo.length > 50) {
+      formErrors.correo = "El correo es invalido";
     }
     setErrors(formErrors);
     setIsValid(Object.keys(formErrors).length === 0);
@@ -54,16 +54,12 @@ function LoginU() { //En este componente se definen las variables.
         }
         }).then(response =>{ //Se manda un mensaje de alerta.
         if (response.data.length === 0) { // Verifica si la respuesta está vacía.
-          alert("No se encontraron datos con las credenciales proporcionadas");
-          console.log(correo);
-          console.log(contrasena);
-          console.log(response.data);
+          alert("las Credenciales no se encontraron");
         } else {
           goToHome();
         }
       }).catch(error => {
         console.error(error);
-        alert("Ocurrió un error al buscar los datos");
       });
     }
   }

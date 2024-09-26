@@ -11,74 +11,74 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
   const [nombre,setNombre]= useState("");//variable donde se guardara el nombre ingresado en el formulario
   const [apellido,setApellido]= useState(""); //varaible donde se guarda ek apelido
   const [contrasena,setContrasena]= useState(""); //variable donde se guarda la contraseña
-  const [correo,setCorreo]= useState("");
-  const [especialidad,setEspecialidad]= useState("");
-  const [isValid, setIsValid] = useState(false);
-  const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
-  const [selectedRole, setSelectedRole] = useState('alumno');
+  const [correo,setCorreo]= useState("");//variable donde se guarda la correo
+  const [especialidad,setEspecialidad]= useState(""); //variable donde se guarda la especialidad
+  const [isValid, setIsValid] = useState(false); //esta variable determinara si el formulario es valido o no.
+  const [errors, setErrors] = useState({}); //Aqui se guardan los errores en los formularios 
+  const navigate = useNavigate(); // se usa para navegar a diferentes paginas
+  const [selectedRole, setSelectedRole] = useState('alumno'); // el rol seleccionado, si es alumno o docente.
 
-  const handleRadioChange = (event) => {
+  const handleRadioChange = (event) => { // cambios en el valor del rol elegido entre alumno y docente.
     setSelectedRole(event.target.id);
   };
 
-  const handleNombreChange = (event) =>{
+  const handleNombreChange = (event) =>{  //actualiza el valor del nombre
     setNombre(event.target.value);
   };
 
-  const handleApellidoChange = (event) =>{
+  const handleApellidoChange = (event) =>{ //actualiza el valor del apellido
     setApellido(event.target.value);
   };
 
-  const handleContrasenaChange = (event) =>{
+  const handleContrasenaChange = (event) =>{ //actaliza el valor de la contraseña
     setContrasena(event.target.value);
   };
 
-  const handleCorreoChange = (event) =>{
+  const handleCorreoChange = (event) =>{ //actualiza el valor del correo
     setCorreo(event.target.value);
   };
 
-  const handleEspecialidadChange = (event) =>{
+  const handleEspecialidadChange = (event) =>{ //actualiza el valor de la Especialidad
     setEspecialidad(event.target.value);
   };
 
-  const validateForm = () => {
+  const validateForm = () => {//validar el formulario y crear los errores de cada campo
     let formErrors = {};
-    if (nombre.trim() === "") {
+    if (nombre.trim() === "") { //validar que el nombre no este vacio
       formErrors.nombre = "El nombre es obligatorio";
-    } else if (nombre.length > 40) {
+    } else if (nombre.length > 40) { //validar que el nombre no sea mayor a 40 caracteres
       formErrors.nombre= "El nombre es invalido";
     }
 
-    if (apellido.trim() === "") {
+    if (apellido.trim() === "") { //validar que el apellido no este vacio
       formErrors.apellido = "El Apellido es obligatorio";
-    } else if (apellido.length > 50) {
+    } else if (apellido.length > 50) { //validar que el apellido no sea mayor a 50 caracteres
       formErrors.nombre= "El Apellido es invalido";
     }
    
-    if (contrasena.length < 8 || contrasena.length > 20) {
+    if (contrasena.length < 8 || contrasena.length > 20) { //validar que la contraseña no sea menor a 8 caracteres y no sea mayor a 20
       formErrors.contrasena = "La contraseña debe tener al menos 8 caracteres y menos de 20";
     }
     
-    if (correo.trim() === "" || correo.length < 11 || correo.length > 50) {
+    if (correo.trim() === "" || correo.length < 11 || correo.length > 50) { //validar que el correo no este vacio y que sea menor a 50 caracteres
       formErrors.correo = "El correo es obligatorio";
-    } else if (!correo.endsWith("@gmail.com") || correo.length > 50) {
+    } else if (!correo.endsWith("@gmail.com")) { //validar que el correo termine en @gmail y que sea menor a 50 caracteres
       formErrors.correo = "El formato de correo es invalido(ejemplo@gmail.com)";
-    }else if (correo.length > 50) {
+    }else if (correo.length > 50) { 
         formErrors.correo = "El formato de correo es invalido";
     }
     
-    if (especialidad.trim() === "") {
+    if (especialidad.trim() === "") { //validar que la especialidad no este vacia
         formErrors.especialidad = "la especialidad es obligatoria";
-    }else if (correo.length > 50) {
-          formErrors.correo = "El formato de especialidad es invalido";
+    }else if (especialidad.length > 50) { //validar que la especialidad no sea mayor a 50 caracteres 
+          formErrors.especialidad = "El formato de especialidad es invalido";
     }
   
     setErrors(formErrors);
     setIsValid(Object.keys(formErrors).length === 0);
   };
 
-  useEffect(() => {
+  useEffect(() => { //se utiliza para enviar los datos del formulario a validacion
       validateForm();
   }, [nombre, apellido, contrasena, correo,especialidad,especialidad]);
 
@@ -96,15 +96,15 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
     });
   }
 
-  const goToLoginU = () => {
+  const goToLoginU = () => { //ir a LoginU
       navigate('/');
   };
 
-  const goToRegistrarUD = () => {
+  const goToRegistrarUD = () => { //ir a RegistrarUD
     navigate('/registrarUD');
   };
   
-  const handleSubmit = () => {
+  const handleSubmit = () => { //Validar si el formulario es valido y mandar a llamar a la funcion insertar
     if(isValid) {
         insertar();
     }else{

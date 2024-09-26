@@ -11,48 +11,48 @@ function RegistrarUD() { //En este componente se definen las variables de nombre
   const [nombre,setNombre]= useState("");//variable donde se guardara el nombre ingresado en el formulario
   const [apellido,setApellido]= useState(""); //varaible donde se guarda ek apelido
   const [contrasena,setContrasena]= useState(""); //variable donde se guarda la contraseña
-  const [correo,setCorreo]= useState("");
-  const [especialidad,setEspecialidad]= useState("");
-  const [matricula,setMatricula]= useState("");
-  const [materia,setMateria]= useState(""); 
-  const [isValid, setIsValid] = useState(false);
-  const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
-  const [selectedRole, setSelectedRole] = useState('docente');
+  const [correo,setCorreo]= useState(""); // variable donde se guarda el correo
+  const [especialidad,setEspecialidad]= useState(""); //variable donde se guarda la especialidad
+const [matricula,setMatricula]= useState(""); //variable donde se guarda la matricula
+  const [materia,setMateria]= useState("");  //variable donde se guarda la materia
+  const [isValid, setIsValid] = useState(false); //variable para validar los campos
+  const [errors, setErrors] = useState({}); //variable para mostrar los errores
+  const navigate = useNavigate(); //variable para navegar entre componentes
+  const [selectedRole, setSelectedRole] = useState('docente'); //variable para seleccionar el rol del usuario
 
-  const handleRadioChange = (event) => {
+  const handleRadioChange = (event) => { //funcion para seleccionar el rol del usuario
     setSelectedRole(event.target.id);
   };
 
-  const handleNombreChange = (event) =>{
+  const handleNombreChange = (event) =>{ //funcion para guardar el nombre ingresado en el formulario
     setNombre(event.target.value);
   };
 
-  const handleApellidoChange = (event) =>{
+  const handleApellidoChange = (event) =>{ //funcion para guardar el apellido ingresado en el formulario
     setApellido(event.target.value);
   };
 
-  const handleContrasenaChange = (event) =>{
+  const handleContrasenaChange = (event) =>{ //funcion para guardar la contraseña ingresada en el formulario
     setContrasena(event.target.value);
   };
 
-  const handleCorreoChange = (event) =>{
+const handleCorreoChange = (event) =>{  //funcion para guardar el correo ingresado en el formulario
     setCorreo(event.target.value);
   };
 
-  const handleEspecialidadChange = (event) =>{
+  const handleEspecialidadChange = (event) =>{ //funcion para guardar la especialidad ingresada en el formulario
     setEspecialidad(event.target.value);
   };
 
-  const handleMatriculaChange = (event) =>{
+  const handleMatriculaChange = (event) =>{ //funcion para guardar la matricula ingresada en el formulario
     setMatricula(event.target.value);
   };
 
-  const handleMateriaChange = (event) =>{
+  const handleMateriaChange = (event) =>{ //funcion para guardar la materia ingresada en el formulario
     setMateria(event.target.value);
   };
 
-  const validateForm = () => {
+  const validateForm = () => { //funcion para validar los campos del formulario
     let formErrors = {};
     if (nombre.trim() === "") {
       formErrors.nombre = "El nombre es obligatorio";
@@ -100,7 +100,7 @@ function RegistrarUD() { //En este componente se definen las variables de nombre
     setIsValid(Object.keys(formErrors).length === 0);
   };
 
-  useEffect(() => {
+  useEffect(() => { //funcion para mandar a validar los campos del formulario
       validateForm();
   }, [nombre, apellido, contrasena, correo,especialidad,materia,matricula,especialidad]);
 
@@ -120,15 +120,15 @@ function RegistrarUD() { //En este componente se definen las variables de nombre
     });
   }
   
-  const goToLoginD = () => {
+  const goToLoginD = () => { //Funcion para navegar al login de docente
     navigate('/loginD');
   };
-  const goToRegistrarU = () => {
+  const goToRegistrarU = () => { //Funcion para navegar al registro de usuario
     navigate('/registrarU');
   };
   
 
-  const handleSubmit = () => {
+  const handleSubmit = () => { //Funcion para mandar a llamar a la funcion de insertar datos
     if(isValid) {
         insertarD();
     }else{

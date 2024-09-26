@@ -7,7 +7,7 @@ import LoginU from './LoginU.js';
 import LoginD from './LoginD.js';
 import Home from './Home.js';
 
-function App() { //En este componente se definen las variables.
+function App() { //En este componente se definen las rutas de la aplicacion
   
   return (
     <Router>

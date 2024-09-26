@@ -11,19 +11,19 @@ import { useNavigate } from 'react-router-dom';
 function LoginU() { //En este componente se definen las variables.
   const [contrasena,setContrasena]= useState(""); //variable donde se guardara la contraseña ingresada en el formulario
   const [correo,setCorreo]= useState(""); //variable donde se guardara el correo ingresado en el formulario
-  const navigate = useNavigate();
-  const [isValid, setIsValid] = useState(false);
-  const [errors, setErrors] = useState({});
+  const navigate = useNavigate(); //variable para navegar entre las paginas.
+  const [isValid, setIsValid] = useState(false); //variable para validar los campos del formulario.
+  const [errors, setErrors] = useState({}); //variable para mostrar los errores en el formulario.
 
-  const handleCorreoChange = (event) =>{
+  const handleCorreoChange = (event) =>{ //Funcion para guardar el correo ingresado en el formulario.
     setCorreo(event.target.value);
   };
 
-  const handleContrasenaChange = (event) =>{
+  const handleContrasenaChange = (event) =>{ //Funcion para guardar la contraseña ingresada en el formulario.
     setContrasena(event.target.value);
   };
 
-  const validateForm = () => {
+  const validateForm = () => { //Funcion para validar los campos del formulario.
     let formErrors = {};
     if (contrasena.length < 8 || contrasena.length > 20) {
       formErrors.contrasena = "La contraseña debe tener al menos 8 caracteres y menos de 20";
@@ -38,8 +38,8 @@ function LoginU() { //En este componente se definen las variables.
     setIsValid(Object.keys(formErrors).length === 0);
   };
 
-  useEffect(() => {
-    validateForm();
+  useEffect(() => { //Funcion para validar los campos del formulario.
+    validateForm(); 
   }, [contrasena, correo]);
 
   const buscar = () =>{ //Funcion para mandar a llamar al backend para buscar los datos en la base de datos.
@@ -64,15 +64,15 @@ function LoginU() { //En este componente se definen las variables.
     }
   }
 
-    const goToRegistrarU = () => {
+    const goToRegistrarU = () => { //Funcion para mandar a llamar a la pagina de registro de usuario.
       navigate('/registrarU');
     };
     
-    const goToHome = () => {
+    const goToHome = () => { //Funcion para mandar a llamar a la pagina de inicio.
       navigate('/home');
     };
 
-    const goToLoginD = () => {
+    const goToLoginD = () => { //Funcion para mandar a llamar a la pagina de login.
       navigate('/loginD');
     };
 

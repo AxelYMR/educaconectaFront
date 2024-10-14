@@ -25,9 +25,17 @@ function LoginD() { //En este componente se definen las variables.
 
   const validateForm = () => { //Funcion para validar los campos del formulario.
     let formErrors = {};
-    if (matricula.trim() === "") formErrors.matricula = "La matricula es obligatoria";
-    if (contrasena.length < 8) formErrors.contrasena = "La contraseña debe tener al menos 8 caracteres y menos de 20";
+    if (matricula.trim() === "") {
+      formErrors.matricula = "La Matricula Es Obligatoria";
+  }else if (matricula.length > 20 || matricula.length < 5) {
+      formErrors.matricula = "La Matricula Debe Tener Entre 5 y 20 Caracteres";
+  }else if(!matricula.startsWith("mat")){
+      formErrors.matricula = "Formato Invalido ejemplo: mat123";
+  }
 
+  if (contrasena.length < 8 || contrasena.length > 20) {
+      formErrors.contrasena = "La Contraseña Debe Tener al Menos 8 Caracteres y Menos De 20";
+    }
     setErrors(formErrors);
     setIsValid(Object.keys(formErrors).length === 0);
   };
@@ -37,21 +45,34 @@ function LoginD() { //En este componente se definen las variables.
   }, [contrasena, matricula]);
 
   const buscar = () =>{ //Funcion para mandar a llamar al backend para buscar los datos en la base de datos.
-    if (!isValid){
+    if(matricula.trim() === "" || contrasena.trim() === ""){ //Verifica si los campos estan vacios.
+      alert("Uno o mas Campos Vacios, por favor revise los campos");
+    }else if(!isValid){
       alert("Datos incorrectos, por favor revise los campos");
     } 
     else{
-      Axios.get("http://localhost:3001/selectD",{
+      Axios.get("http://localhost:3001/seEncuentraD",{
         params:{
-          matricula:matricula, //Se mandan los datos ingresados en el formulario.
-          contrasena:contrasena
+          matricula:matricula //Se mandan los datos ingresados en el formulario.
         }
         }).then(response =>{ //Se manda un mensaje de alerta.
           if (response.data.length === 0) { // Verifica si la respuesta está vacía.
-            alert("Campos Incorrectos porfavor revise los campos");
+            alert("Usuario No Encontrado");
           } else {
-            goToHome();
-          }
+            Axios.get("http://localhost:3001/selectD",{
+              params:{
+                matricula:matricula, //Se mandan los datos ingresados en el formulario.
+                contrasena:contrasena
+              }
+              }).then(response =>{ //Se manda un mensaje de alerta.
+                if (response.data.length === 0) { // Verifica si la respuesta está vacía.
+                  alert("La Contraseña es Incorrecta");
+                } else {
+                  goToHome();
+                }
+              }).catch(error => {
+                console.error(error);
+              });          }
         }).catch(error => {
           console.error(error);
         });
@@ -114,13 +135,15 @@ function LoginD() { //En este componente se definen las variables.
         </div>
         <div className="container text-center">
             {  
-                <button className='btn btn-primary' onClick={buscar}>Log In</button>
+                <button className='btn btn-primary' onClick={buscar}>Iniciar Sesion</button>
             }
             {  
-                <button className='btn btn-primary' onClick={goToRegistrarU}>Crear Usuario</button>
+                <button className='btn btn-primary' onClick={goToRegistrarU}>Registrarse</button>
             }
         </div>
     </div>
+      <br/>
+      <br/>
       <br/>
       <br/>
       <br/>

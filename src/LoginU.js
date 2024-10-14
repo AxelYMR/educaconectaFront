@@ -26,14 +26,17 @@ function LoginU() { //En este componente se definen las variables.
   const validateForm = () => { //Funcion para validar los campos del formulario.
     let formErrors = {};
     if (contrasena.length < 8 || contrasena.length > 20) {
-      formErrors.contrasena = "La contraseña debe tener al menos 8 caracteres y menos de 20";
+      formErrors.contrasena = "La Contraseña Debe Tener al Menos 8 Caracteres y Menos De 20";
     }
     
-    if (correo.trim() === "" || correo.length < 11 || correo.length > 50) {
-      formErrors.correo = "El correo es obligatorio";
+    if (correo.trim() === "") {
+      formErrors.correo = "El Correo Es obligatorio";
     } else if (!correo.endsWith("@gmail.com") || correo.length > 50) {
-      formErrors.correo = "El correo es invalido";
+      formErrors.correo = "El Formato de Correo es Invalido(ejemplo@gmail.com)";
+    }else if (correo.length > 50 || correo.length < 11) {
+        formErrors.correo = "El Correo debe contener mas de 11 y menos de 50 caracteres";
     }
+    
     setErrors(formErrors);
     setIsValid(Object.keys(formErrors).length === 0);
   };
@@ -43,24 +46,39 @@ function LoginU() { //En este componente se definen las variables.
   }, [contrasena, correo]);
 
   const buscar = () =>{ //Funcion para mandar a llamar al backend para buscar los datos en la base de datos.
-    if (!isValid){
+    if(correo.trim() === "" || contrasena.trim() === ""){ //Verifica si los campos estan vacios.
+      alert("Uno o mas Campos Vacios, por favor revise los campos");
+
+    }else if(!isValid){
       alert("Datos incorrectos, por favor revise los campos");
     } 
     else{
-      Axios.get("http://localhost:3001/selectU",{
+      Axios.get("http://localhost:3001/seEncuentraA",{
         params:{
-          correo:correo, //Se mandan los datos ingresados en el formulario.
-          contrasena:contrasena
+          correo:correo //Se mandan los datos ingresados en el formulario.
         }
         }).then(response =>{ //Se manda un mensaje de alerta.
-        if (response.data.length === 0) { // Verifica si la respuesta está vacía.
-          alert("las Credenciales no se encontraron");
-        } else {
-          goToHome();
-        }
-      }).catch(error => {
-        console.error(error);
-      });
+          if (response.data.length === 0) { // Verifica si la respuesta está vacía.
+            alert("Usuario No Encontrado");
+          } else {
+            Axios.get("http://localhost:3001/selectA",{
+              params:{
+                correo:correo, //Se mandan los datos ingresados en el formulario.
+                contrasena:contrasena
+              }
+              }).then(response =>{ //Se manda un mensaje de alerta.
+                if (response.data.length === 0 || response.data.length === 0) { // Verifica si la respuesta está vacía.
+                  alert("La Contraseña es Incorrecta");
+                } else {
+                  goToHome();
+                }
+              }).catch(error => {
+                console.error(error);
+              });          
+            }
+        }).catch(error => {
+          console.error(error);
+        });
     }
   }
 
@@ -122,10 +140,10 @@ function LoginU() { //En este componente se definen las variables.
         </div>
         <div className="container text-center">
             {  
-                <button className='btn btn-primary' onClick={buscar}>Log In</button>
+                <button className='btn btn-primary' onClick={buscar}>Iniciar Sesion</button>
             }
             {  
-                <button className='btn btn-primary' onClick={goToRegistrarU}>Crear Usuario</button>
+                <button className='btn btn-primary' onClick={goToRegistrarU}>Registrarse</button>
             }
         </div>
     </div>

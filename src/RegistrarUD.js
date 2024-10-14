@@ -6,14 +6,13 @@ import Header from './commons/Header';
 import Footer from './commons/Footer';
 import { useNavigate } from 'react-router-dom';
 
-
 function RegistrarUD() { //En este componente se definen las variables de nombre.
   const [nombre,setNombre]= useState("");//variable donde se guardara el nombre ingresado en el formulario
   const [apellido,setApellido]= useState(""); //varaible donde se guarda ek apelido
   const [contrasena,setContrasena]= useState(""); //variable donde se guarda la contraseña
   const [correo,setCorreo]= useState(""); // variable donde se guarda el correo
   const [especialidad,setEspecialidad]= useState(""); //variable donde se guarda la especialidad
-const [matricula,setMatricula]= useState(""); //variable donde se guarda la matricula
+  const [matricula,setMatricula]= useState(""); //variable donde se guarda la matricula
   const [materia,setMateria]= useState("");  //variable donde se guarda la materia
   const [isValid, setIsValid] = useState(false); //variable para validar los campos
   const [errors, setErrors] = useState({}); //variable para mostrar los errores
@@ -54,46 +53,50 @@ const handleCorreoChange = (event) =>{  //funcion para guardar el correo ingresa
 
   const validateForm = () => { //funcion para validar los campos del formulario
     let formErrors = {};
-    if (nombre.trim() === "") {
+    
+    if (nombre.trim() === "") { //validar que el nombre no este vacio
       formErrors.nombre = "El nombre es obligatorio";
-    } else if (nombre.length > 40) {
-      formErrors.nombre= "El nombre es invalido";
+    } else if (nombre.length > 40) { //validar que el nombre no sea mayor a 40 caracteres
+      formErrors.nombre= "El nombre no puede tener mas de 40 Caracteres";
+    }else if (/\d/.test(nombre)) { // validar que el nombre no contenga números
+      formErrors.nombre = "El nombre no puede contener números";
     }
 
-    if (apellido.trim() === "") {
-      formErrors.apellido = "El Apellido es obligatorio";
-    } else if (apellido.length > 50) {
-      formErrors.nombre= "El Apellido es invalido";
+    if (apellido.trim() === "") { //validar que el apellido no este vacio
+      formErrors.apellido = "El Apellido Es Obligatorio";
+    } else if (apellido.length > 50) { //validar que el apellido no sea mayor a 50 caracteres
+      formErrors.apellido= "El Apellido no puede tener mas de 50 caracteres";
+    }else if (/\d/.test(apellido)) { // validar que el nombre no contenga números
+      formErrors.apellido = "El Apellido No Puede Contener Números";
     }
-   
+
     if (contrasena.length < 8 || contrasena.length > 20) {
-      formErrors.contrasena = "La contraseña debe tener al menos 8 caracteres y menos de 20";
+      formErrors.contrasena = "La Contraseña Debe Tener al Menos 8 Caracteres y Menos De 20";
     }
     
-    if (correo.trim() === "" || correo.length < 11 || correo.length > 50) {
-      formErrors.correo = "El correo es obligatorio";
+    if (correo.trim() === "") {
+      formErrors.correo = "El Correo Es obligatorio";
     } else if (!correo.endsWith("@gmail.com") || correo.length > 50) {
-      formErrors.correo = "El formato de correo es invalido(ejemplo@gmail.com)";
-    }else if (correo.length > 50) {
-        formErrors.correo = "El formato de correo es invalido";
+      formErrors.correo = "El Formato de Correo es Invalido(ejemplo@gmail.com)";
+    }else if (correo.length > 50 || correo.length < 11) {
+        formErrors.correo = "El Correo debe contener mas de 11 y menos de 50 caracteres";
     }
     
     if (especialidad.trim() === "") {
-        formErrors.especialidad = "la especialidad es obligatoria";
-    }else if (correo.length > 50) {
-          formErrors.correo = "El formato de especialidad es invalido";
+        formErrors.especialidad = "Selecciona Tu Especialidad";
     }
 
     if (matricula.trim() === "") {
-        formErrors.especialidad = "la especialidad es obligatoria";
-    }else if (matricula.length > 20) {
-          formErrors.matricula = "El formato de matricula es invalido";
+      formErrors.matricula = "La Matricula Es Obligatoria";
+    }else if (matricula.length > 20 || matricula.length < 5) {
+      formErrors.matricula = "La Matricula Debe Tener Entre 5 y 20 Caracteres";
+    }else if(!matricula.startsWith("mat")){
+      formErrors.matricula = "Formato Invalido ejemplo: mat123";
     }
-
     if (materia.trim() === "") {
-        formErrors.materia = "la Materia a impartir es obligatoria";
-    }else if (materia.length > 40) {
-          formErrors.materia = "El formato de materia es invalido";
+      formErrors.materia = "La Materia a impartir es obligatoria";
+    }else if (materia.length > 40 || materia.length < 5) {
+      formErrors.materia = "La materia debe contener entre 5 y 40 caracteres";
     }
 
     setErrors(formErrors);
@@ -104,38 +107,56 @@ const handleCorreoChange = (event) =>{  //funcion para guardar el correo ingresa
       validateForm();
   }, [nombre, apellido, contrasena, correo,especialidad,materia,matricula,especialidad]);
 
-
-  const insertarD = () =>{ //Funcion para mandar a llamar al backend para insertar los datos en la base de datos.
-    Axios.post("http://localhost:3001/createD",{
-      nombre:nombre,
-      correo:correo,
-      apellido:apellido,
-      contrasena:contrasena,
-      especialidad:especialidad,
-      materia:materia,
-      matricula:matricula
-    }).then(()=>{
-      alert("Registrado con Exito"); //Alerta de usuario Registrado.
-      goToLoginD();
+  const insertarD = () =>{ //Funcion para mandar a llamar al backend para buscar los datos en la base de datos.
+    Axios.get("http://localhost:3001/buscarD",{
+      params:{
+        correo:correo,
+        matricula:matricula
+      }
+    }).then(response =>{ 
+      if(response.data.length === null || response.data.length === 0) { // Verifica si la respuesta está vacía.
+        Axios.post("http://localhost:3001/createD",{
+          nombre:nombre,
+          correo:correo,
+          apellido:apellido,
+          contrasena:contrasena,
+          especialidad:especialidad,
+          materia:materia,
+          matricula:matricula
+        }).then(()=>{
+          alert("Usuario Registrado con Exito"); //Alerta de usuario Registrado.
+          goToLoginD();
+        });  
+      }else{
+        alert("El Usuario Ya Se Encuentra Registrado");
+      }
+    }).catch(error => {
+      console.error(error);
     });
-  }
+  };
   
   const goToLoginD = () => { //Funcion para navegar al login de docente
     navigate('/loginD');
   };
+
   const goToRegistrarU = () => { //Funcion para navegar al registro de usuario
     navigate('/registrarU');
   };
   
-
   const handleSubmit = () => { //Funcion para mandar a llamar a la funcion de insertar datos
     if(isValid) {
-        insertarD();
+      insertarD();
     }else{
-        alert("Datos Incorrectos, Por Favor Revise los Campos");
+      if(correo.trim() === "" || nombre.trim() === ""|| apellido.trim() === "" || contrasena.trim() === "" || especialidad.trim() === "" || matricula.trim() === "" || materia.trim() === ""){
+        alert("Uno O mas Campos Vacios");
+      }else if(errors.contrasena){
+        alert(errors.contrasena);
+      }else{
+        alert("Campos Incorrectos, verifique los campos");
+      }
     }
   };
-  
+   
   return (
     <div className="background">
       <div className='navbar navbar-light header-container'> 
@@ -203,16 +224,19 @@ const handleCorreoChange = (event) =>{  //funcion para guardar el correo ingresa
           </div>
           {errors.especialidad && <div className="alertas">*{errors.especialidad}</div>}
           <div className="input-group mb-3">
-          <span className="input-group-text" id="basic-addon1">Especialidad:</span>
-          <input 
-            type="text" 
-            value={especialidad}
-            onChange={handleEspecialidadChange}
-            placeholder="Ingrese su Contraseña"
-            className="form-control"
-            aria-label="Especilaidad" 
-            aria-describedby="basic-addon1"/>         
-          </div>  
+        <span className="input-group-text">Especialidad:</span>
+        <select 
+          value={especialidad} 
+          onChange={handleEspecialidadChange} 
+          className="form-control"
+          aria-label="Especialidad"
+          aria-describedby="basic-addon1"
+        >
+          <option value="">Seleccionar</option>
+          <option value="especialidad1">especialidad1</option>
+          <option value="especialidad2">especialidad2</option>
+        </select>
+      </div>  
         </div>
         <div>
           {errors.matricula && <div className="alertas">*{errors.matricula}</div>}

@@ -47,53 +47,70 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
     if (nombre.trim() === "") { //validar que el nombre no este vacio
       formErrors.nombre = "El nombre es obligatorio";
     } else if (nombre.length > 40) { //validar que el nombre no sea mayor a 40 caracteres
-      formErrors.nombre= "El nombre es invalido";
+      formErrors.nombre= "El nombre no puede tener mas de 40 Caracteres";
+    }else if (/\d/.test(nombre)) { // validar que el nombre no contenga números
+      formErrors.nombre = "El nombre no puede contener números";
     }
 
     if (apellido.trim() === "") { //validar que el apellido no este vacio
-      formErrors.apellido = "El Apellido es obligatorio";
+      formErrors.apellido = "El Apellido Es Obligatorio";
     } else if (apellido.length > 50) { //validar que el apellido no sea mayor a 50 caracteres
-      formErrors.nombre= "El Apellido es invalido";
+      formErrors.apellido= "El Apellido no puede tener mas de 50 caracteres";
+    }else if (/\d/.test(apellido)) { // validar que el nombre no contenga números
+      formErrors.apellido = "El Apellido No Puede Contener Números";
     }
-   
-    if (contrasena.length < 8 || contrasena.length > 20) { //validar que la contraseña no sea menor a 8 caracteres y no sea mayor a 20
-      formErrors.contrasena = "La contraseña debe tener al menos 8 caracteres y menos de 20";
-    }
-    
-    if (correo.trim() === "" || correo.length < 11 || correo.length > 50) { //validar que el correo no este vacio y que sea menor a 50 caracteres
-      formErrors.correo = "El correo es obligatorio";
-    } else if (!correo.endsWith("@gmail.com")) { //validar que el correo termine en @gmail y que sea menor a 50 caracteres
-      formErrors.correo = "El formato de correo es invalido(ejemplo@gmail.com)";
-    }else if (correo.length > 50) { 
-        formErrors.correo = "El formato de correo es invalido";
+
+    if (contrasena.length < 8 || contrasena.length > 20) {
+      formErrors.contrasena = "La Contraseña Debe Tener al Menos 8 Caracteres y Menos De 20";
     }
     
-    if (especialidad.trim() === "") { //validar que la especialidad no este vacia
-        formErrors.especialidad = "la especialidad es obligatoria";
-    }else if (especialidad.length > 50) { //validar que la especialidad no sea mayor a 50 caracteres 
-          formErrors.especialidad = "El formato de especialidad es invalido";
+    if (correo.trim() === "") {
+      formErrors.correo = "El Correo Es obligatorio";
+    } else if (!correo.endsWith("@gmail.com") || correo.length > 50) {
+      formErrors.correo = "El Formato de Correo es Invalido(ejemplo@gmail.com)";
+    }else if (correo.length > 50 || correo.length < 11) {
+        formErrors.correo = "El Correo debe contener mas de 11 y menos de 50 caracteres";
     }
-  
+    
+    if (especialidad.trim() === "") {
+        formErrors.especialidad = "Selecciona Tu Especialidad";
+    }
+
     setErrors(formErrors);
     setIsValid(Object.keys(formErrors).length === 0);
   };
-
-  useEffect(() => { //se utiliza para enviar los datos del formulario a validacion
-      validateForm();
-  }, [nombre, apellido, contrasena, correo,especialidad,especialidad]);
-
   
-  const insertar = () =>{ //Funcion para mandar a llamar al backend para insertar los datos en la base de datos.
-    Axios.post("http://localhost:3001/createU",{
-      nombre:nombre,
-      correo:correo,
-      apellido:apellido,
-      contrasena:contrasena,
-      especialidad:especialidad
-    }).then(()=>{
-      alert("Registrado con Exito"); //Alerta de usuario Registrado.
-      goToLoginU();
-    });
+  useEffect(() => { //se utiliza para enviar los datos del formulario a validacion
+    validateForm();
+  },[nombre, apellido, contrasena, correo,especialidad,especialidad]);
+
+  const insertar = () =>{ //Funcion para mandar a llamar al backend para buscar los datos en la base de datos.
+    Axios.get("http://localhost:3001/buscarU",{
+      params:{
+        nombre:nombre,
+        correo:correo,
+        apellido:apellido,
+        contrasena:contrasena,
+        especialidad:especialidad
+      }
+      }).then(response =>{ 
+        if (response.data.length === 0 || response.data.length === null) { // Verifica si la respuesta está vacía.
+          Axios.post("http://localhost:3001/createU",{
+            nombre:nombre,
+            correo:correo,
+            apellido:apellido,
+            contrasena:contrasena,
+            especialidad:especialidad
+          }).then(()=>{
+            alert("Usuario Registrado con Exito"); //Alerta de usuario Registrado.
+            goToLoginU();
+          });  
+        }else{
+          alert("El Usuario Ya Se Encuentra Registrado");
+        }
+      }).catch(error => {
+        console.error(error);
+      });
   }
 
   const goToLoginU = () => { //ir a LoginU
@@ -180,16 +197,19 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
           </div>
           {errors.especialidad && <div className="alertas">*{errors.especialidad}</div>}
           <div className="input-group mb-3">
-          <span className="input-group-text" id="basic-addon1">Especialidad:</span>
-          <input 
-            type="text" 
-            value={especialidad}
-            onChange={handleEspecialidadChange}
-            placeholder="Ingrese su Contraseña"
-            className="form-control"
-            aria-label="Especilaidad" 
-            aria-describedby="basic-addon1"/>         
-          </div>  
+        <span className="input-group-text">Especialidad:</span>
+        <select 
+          value={especialidad} 
+          onChange={handleEspecialidadChange} 
+          className="form-control"
+          aria-label="Especialidad"
+          aria-describedby="basic-addon1"
+        >
+          <option value="">Seleccionar</option>
+          <option value="especialidad1">especialidad1</option>
+          <option value="especialidad2">especialidad2</option>
+        </select>
+      </div>  
         </div>
       <div className="container">
         <div class="form-check">

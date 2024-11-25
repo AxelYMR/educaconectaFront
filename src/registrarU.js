@@ -125,7 +125,19 @@ function RegistrarU() { //En este componente se definen las variables de nombre.
     if(isValid) {
         insertar();
     }else{
-      alert("Datos Incorrectos, Por Favor Revise los Campos");
+      if(correo.trim() === "" && contrasena.trim() === "" || correo.trim() === "" && contrasena.trim() === "" && especialidad.trim() === "" || nombre.trim() === "" || apellido.trim() ==="" ){
+        alert("Uno o mas campos vacios");
+      }else if(correo.trim() === ""){
+        alert("Faltan Campos Obligatorios: Correo");
+      }else if(errors.correo !== undefined){
+        alert("Formato de Correo Incorrecto");
+      }else if(errors.contrasena !== undefined){
+        alert("La contraseña debe tener al menos 8 caracteres y menos de 20");
+      }else if(especialidad.trim() === ""){
+        alert("Selecciona tu Especialidad");
+      }else{
+        alert("Campos Incorrectos, verifique los campos");
+      }
     }
   };
   

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { GlobalContext } from './GlobalState';
 import './LoginU.css';
 import { useState, useEffect } from "react";	
 import Axios from "axios";
@@ -9,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 function LoginD() { //En este componente se definen las variables.
+  const {setUserData} = useContext(GlobalContext);
   const [contrasena,setContrasena]= useState(""); //variable donde se guardara la contraseña ingresada en el formulario
   const [matricula,setMatricula]= useState(""); //variable donde se guardara el correo ingresado en el formulario
   const navigate = useNavigate(); //variable para navegar entre las paginas.
@@ -25,11 +27,12 @@ function LoginD() { //En este componente se definen las variables.
 
   const validateForm = () => { //Funcion para validar los campos del formulario.
     let formErrors = {};
+    const matriculaRegex = /^mat\d+$/;
     if (matricula.trim() === "") {
       formErrors.matricula = "La Matricula Es Obligatoria";
   }else if (matricula.length > 20 || matricula.length < 5) {
       formErrors.matricula = "La Matricula Debe Tener Entre 5 y 20 Caracteres";
-  }else if(!matricula.startsWith("mat")){
+  }else if(!matriculaRegex.test(matricula)){
       formErrors.matricula = "Formato Invalido ejemplo: mat123";
   }
 
@@ -48,9 +51,8 @@ function LoginD() { //En este componente se definen las variables.
     if(matricula.trim() === "" || contrasena.trim() === ""){ //Verifica si los campos estan vacios.
       alert("Uno o mas Campos Vacios, por favor revise los campos");
     }else if(!isValid){
-      alert("Datos incorrectos, por favor revise los campos");
-    } 
-    else{
+        alert("Datos incorrectos, por favor revise los campos");
+      }else {
       Axios.get("http://localhost:3001/seEncuentraD",{
         params:{
           matricula:matricula //Se mandan los datos ingresados en el formulario.
@@ -66,8 +68,9 @@ function LoginD() { //En este componente se definen las variables.
               }
               }).then(response =>{ //Se manda un mensaje de alerta.
                 if (response.data.length === 0) { // Verifica si la respuesta está vacía.
-                  alert("La Contraseña es Incorrecta");
+                  alert("La contraseña es incorrecta");
                 } else {
+                  setUserData(response.data);
                   goToHome();
                 }
               }).catch(error => {
@@ -126,7 +129,7 @@ function LoginD() { //En este componente se definen las variables.
           {errors.contrasena && <div className="alertas">*{errors.contrasena}</div>}
         <div className="input-group mb-3">
           <span className="input-group-text" id="basic-addon1">Contraseña:</span>
-          <input type="text" value={contrasena}
+          <input type="password" value={contrasena}
             onChange={(event) => {
               handleContrasenaChange(event);
             }}
@@ -142,8 +145,6 @@ function LoginD() { //En este componente se definen las variables.
             }
         </div>
     </div>
-      <br/>
-      <br/>
       <br/>
       <br/>
       <br/>

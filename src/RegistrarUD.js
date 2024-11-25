@@ -13,6 +13,7 @@ function RegistrarUD() { //En este componente se definen las variables de nombre
   const [correo,setCorreo]= useState(""); // variable donde se guarda el correo
   const [especialidad,setEspecialidad]= useState(""); //variable donde se guarda la especialidad
   const [matricula,setMatricula]= useState(""); //variable donde se guarda la matricula
+  const [materias, setMaterias] = useState([]);
   const [materia,setMateria]= useState("");  //variable donde se guarda la materia
   const [isValid, setIsValid] = useState(false); //variable para validar los campos
   const [errors, setErrors] = useState({}); //variable para mostrar los errores
@@ -56,15 +57,15 @@ const handleCorreoChange = (event) =>{  //funcion para guardar el correo ingresa
     
     if (nombre.trim() === "") { //validar que el nombre no este vacio
       formErrors.nombre = "El nombre es obligatorio";
-    } else if (nombre.length > 40) { //validar que el nombre no sea mayor a 40 caracteres
-      formErrors.nombre= "El nombre no puede tener mas de 40 Caracteres";
+    } else if (nombre.length > 40 || nombre.length < 3) { //validar que el nombre no sea mayor a 40 caracteres
+      formErrors.nombre= "El nombre no puede tener mas de 40 Caracteres o menos que 3";
     }else if (/\d/.test(nombre)) { // validar que el nombre no contenga números
       formErrors.nombre = "El nombre no puede contener números";
     }
 
     if (apellido.trim() === "") { //validar que el apellido no este vacio
       formErrors.apellido = "El Apellido Es Obligatorio";
-    } else if (apellido.length > 50) { //validar que el apellido no sea mayor a 50 caracteres
+    } else if (apellido.length > 50 || apellido.length < 5) { //validar que el apellido no sea mayor a 50 caracteres
       formErrors.apellido= "El Apellido no puede tener mas de 50 caracteres";
     }else if (/\d/.test(apellido)) { // validar que el nombre no contenga números
       formErrors.apellido = "El Apellido No Puede Contener Números";
@@ -86,13 +87,14 @@ const handleCorreoChange = (event) =>{  //funcion para guardar el correo ingresa
         formErrors.especialidad = "Selecciona Tu Especialidad";
     }
 
+    const matriculaRegex = /^mat\d+$/;
     if (matricula.trim() === "") {
       formErrors.matricula = "La Matricula Es Obligatoria";
-    }else if (matricula.length > 20 || matricula.length < 5) {
+  }else if (matricula.length > 20 || matricula.length < 5) {
       formErrors.matricula = "La Matricula Debe Tener Entre 5 y 20 Caracteres";
-    }else if(!matricula.startsWith("mat")){
+  }else if(!matriculaRegex.test(matricula)){
       formErrors.matricula = "Formato Invalido ejemplo: mat123";
-    }
+  }
     if (materia.trim() === "") {
       formErrors.materia = "La Materia a impartir es obligatoria";
     }else if (materia.length > 40 || materia.length < 5) {
@@ -102,6 +104,17 @@ const handleCorreoChange = (event) =>{  //funcion para guardar el correo ingresa
     setErrors(formErrors);
     setIsValid(Object.keys(formErrors).length === 0);
   };
+
+  useEffect(() => {
+    Axios.get('http://localhost:3001/materias')
+      .then((response) => {
+        setMaterias(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching materias:', error);
+      });
+  }, []);
 
   useEffect(() => { //funcion para mandar a validar los campos del formulario
       validateForm();
@@ -147,10 +160,18 @@ const handleCorreoChange = (event) =>{  //funcion para guardar el correo ingresa
     if(isValid) {
       insertarD();
     }else{
-      if(correo.trim() === "" || nombre.trim() === ""|| apellido.trim() === "" || contrasena.trim() === "" || especialidad.trim() === "" || matricula.trim() === "" || materia.trim() === ""){
-        alert("Uno O mas Campos Vacios");
-      }else if(errors.contrasena){
-        alert(errors.contrasena);
+      if(materia.trim() === "" || matricula.trim() === "" || nombre.trim() === ""|| apellido.trim() === "" || (correo.trim() === "" && contrasena.trim() === "" && especialidad.trim() === "") || (correo.trim() === "" && contrasena.trim() === "") ){
+        alert("Uno o mas campos vacios");
+      }else if(correo.trim() === ""){
+        alert("Faltan campos obligatorios: correo");
+      }else if(errors.correo !== undefined){
+        alert("Formato de Correo Incorrecto");
+      }else if(errors.contrasena !== undefined){
+        alert("La contraseña debe tener al menos 8 caracteres y menos de 20");
+      }else if(errors.matricula !== undefined){
+        alert("Formato invalido ejemplo: mat123"); 
+      }else if(especialidad.trim() === ""){
+        alert("Selecciona tu especialidad"); 
       }else{
         alert("Campos Incorrectos, verifique los campos");
       }
@@ -161,7 +182,8 @@ const handleCorreoChange = (event) =>{  //funcion para guardar el correo ingresa
     <div className="background">
       <div className='navbar navbar-light header-container'> 
         <Header/>
-      </div> 
+      </div>
+      <br/> 
       <div className="container">
         <div className="container"> 
           <div className="card-header h3 text-muted text-center">
@@ -254,15 +276,21 @@ const handleCorreoChange = (event) =>{  //funcion para guardar el correo ingresa
           {errors.materia && <div className="alertas">*{errors.materia}</div>}
           <div className="input-group mb-3">
             <span className="input-group-text">Materia:</span>
-            <input 
-              type="text" 
-              value={materia}
-              onChange={handleMateriaChange}
-              placeholder="Ingrese su Materia a Impartir"
-              className="form-control"
-              aria-label="Username" 
-              aria-describedby="basic-addon1"/>
-          </div>
+              <select 
+                value={materia} 
+                onChange={handleMateriaChange} 
+                className="form-control"
+                aria-label="Materia"
+                aria-describedby="basic-addon1"
+              >
+              <option value="">Seleccione una materia</option>
+                  {materias.map((materia) => (
+              <option key={materia.id_materia} value={materia.nombre}>
+                    {materia.nombre}
+              </option>
+          ))}
+        </select>
+          </div> 
     </div>
       <div className="container">
         <div class="form-check">

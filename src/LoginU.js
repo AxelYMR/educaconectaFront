@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { GlobalContext } from './GlobalState';
 import './LoginU.css';
 import { useState, useEffect } from "react";	
 import Axios from "axios";
@@ -9,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 function LoginU() { //En este componente se definen las variables.
+  const { setUserData } = useContext(GlobalContext);
   const [contrasena,setContrasena]= useState(""); //variable donde se guardara la contraseña ingresada en el formulario
   const [correo,setCorreo]= useState(""); //variable donde se guardara el correo ingresado en el formulario
   const navigate = useNavigate(); //variable para navegar entre las paginas.
@@ -31,7 +33,7 @@ function LoginU() { //En este componente se definen las variables.
     
     if (correo.trim() === "") {
       formErrors.correo = "El Correo Es obligatorio";
-    } else if (!correo.endsWith("@gmail.com") || correo.length > 50) {
+    } else if (!correo.endsWith("@gmail.com") ) {
       formErrors.correo = "El Formato de Correo es Invalido(ejemplo@gmail.com)";
     }else if (correo.length > 50 || correo.length < 11) {
         formErrors.correo = "El Correo debe contener mas de 11 y menos de 50 caracteres";
@@ -69,7 +71,9 @@ function LoginU() { //En este componente se definen las variables.
               }).then(response =>{ //Se manda un mensaje de alerta.
                 if (response.data.length === 0 || response.data.length === 0) { // Verifica si la respuesta está vacía.
                   alert("La Contraseña es Incorrecta");
+
                 } else {
+                  setUserData(response.data); // Guardar datos del usuario en el contexto
                   goToHome();
                 }
               }).catch(error => {
@@ -80,7 +84,7 @@ function LoginU() { //En este componente se definen las variables.
           console.error(error);
         });
     }
-  }
+  };
 
     const goToRegistrarU = () => { //Funcion para mandar a llamar a la pagina de registro de usuario.
       navigate('/registrarU');

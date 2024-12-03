@@ -1,0 +1,40 @@
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #201e43;
+    padding: 20px;
+    overflow-y: auto;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sidebar h4 {
+    margin-bottom: 20px;
+  }
+  
+  .notificacion {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #0fbff5;
+    
+  }
+  
+  .notificacion h5 {
+    margin: 0 0 10px 0;
+  }
+  .colorTxt{
+    color: white;
+  }
+  .contenido-con-sidebar {
+    display: flex;
+  }
+  
+  .contenido-principal {
+    margin-left: 250px; /* Ancho de la barra lateral + margen */
+    padding: 25px;
+    width: 90%;
+  }

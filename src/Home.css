@@ -1,3 +1,17 @@
 .Navegacion {
     margin-top: 0%;
 }
+
+.grupo_cursos {
+    margin: 3%;
+}
+
+.cursos{
+    padding: 1%;
+}
+
+.bienvenida{
+    font:italic;
+    font-size: 170%;
+    margin-left: 3%;
+}

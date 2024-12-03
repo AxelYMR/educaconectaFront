@@ -8,6 +8,8 @@ import LoginU from './LoginU.js';
 import LoginD from './LoginD.js';
 import Home from './Home.js';
 import Perfil from './Perfil.js';
+import GestionarCurso from './GestionarCurso.js';
+import GestionarContenido from './GestionarContenido.js';
 
 function App() { //En este componente se definen las rutas de la aplicacion
   
@@ -21,6 +23,8 @@ function App() { //En este componente se definen las rutas de la aplicacion
             <Route path="/LoginD" element={<LoginD />} />
             <Route path="/Home" element={<Home />} />
             <Route path="/Perfil" element={<Perfil />} />
+            <Route path="/GestionarCurso" element={<GestionarCurso />} />
+            <Route path="/GestionarContenido/:id" element={<GestionarContenido />} />
           </Routes>
         </div>
       </Router>

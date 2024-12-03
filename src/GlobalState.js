@@ -9,7 +9,8 @@ export const GlobalProvider = ({ children }) => {
     apellido: '',
     contrasena: '',
     correo: '',
-    matricula: ''
+    matricula: '',
+    id_materia: ''
   });
 
   const updateGlobalState = (newState) => {

@@ -21,9 +21,11 @@ function Perfil() { //En este componente se definen las variables.
   const { globalState, updateGlobalState } = useContext(GlobalContext);
   const [especialidad,setEspecialidad]= useState("");
   const navigate = useNavigate(); //variable para navegar entre las paginas.
-  
+  const [isDocente, setIsDocente] = useState(false);
+
   const [materiasList,setMaterias] = useState([]);
 
+  
   useEffect(() => {
     const storedUserData = localStorage.getItem('userData');
     if (storedUserData) {
@@ -49,6 +51,10 @@ function Perfil() { //En este componente se definen las variables.
   
   const goToHome = () => { //Funcion para mandar a llamar a la pagina de inicio.
     navigate('/home');
+  };
+  
+  const goToGestionarCurso = () => { //Funcion para mandar a llamar a la pagina de inicio.
+    navigate('/GestionarCurso');
   };
 
   const handleNombreChange = (e) => setNombre(e.target.value);
@@ -126,8 +132,26 @@ function Perfil() { //En este componente se definen las variables.
         }
       });
   }
+
+  const checkIsDocente = () => {
+    Axios.get("http://localhost:3001/seEncuentraD", {
+      params: {
+        matricula:matricula
+      }
+    }).then(response => {
+      if (response.data.length === 0 || response.data.length === null) {
+        setIsDocente(false);
+      } else {
+        setIsDocente(true);
+      }
+    }).catch(error => {
+      console.error('Error en la solicitud:', error);
+    });
+  };
+  
   useEffect(() => { //se utiliza para enviar los datos del formulario a validacion
     getMaterias();
+    checkIsDocente();
   });
  
   useEffect(() => { //se utiliza para enviar los datos del formulario a validacion
@@ -378,6 +402,10 @@ function Perfil() { //En este componente se definen las variables.
         <div className="botones">
           <button className="btn btn-primary" onClick={goToHome}>Cancelar</button>
           <button className="btn btn-primary" onClick={actualizarDatos}>Guardar Cambios</button>
+          
+        </div>
+        <div className="botonGestionar">
+          <button className="btn btn-primary" disabled={isDocente} onClick={goToGestionarCurso}>Agregar Materias</button>
         </div>
       </div>
       <br/>

@@ -1,0 +1,80 @@
+.imagen-container {
+    width: 50%; /* Ajusta el ancho del contenedor */
+    margin: 0 auto; /* Centra el contenedor horizontalmente */
+    text-align: center; /* Centra el contenido dentro del contenedor */
+}
+
+.imagen{
+    width: 50%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px; /* Ajusta el borde redondeado */
+    padding: 0;
+}
+.marco{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+.nombre{
+    justify-content: center;
+    padding: 1%;
+    font-size: 280%;
+    text-align: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.descripcion{
+    justify-content: center;
+    padding: 1%;
+    font-size: 170%;
+    text-align: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.botonesDocente{
+    text-align: center;
+}
+.tituloContenido{
+    font-size: 300%;
+    text-align: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.todaActividad{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+}
+.tituloActividad{
+    font-size: 220%;
+    text-align: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.tipoArchivo{
+    font-size: 100%;
+    text-align: center;
+    font-family: 'Arial Narrow', Arial, sans-serif;
+}
+.datosActividad{
+    display: grid;    
+}
+.imagenActividad{
+    display: grid;    
+}
+.containerMedia{
+    width: 50%; /* Ajusta el ancho del contenedor */
+    margin: 0; /* Centra el contenedor horizontalmente */
+    text-align: center; /* Centra el contenido dentro del contenedor */  
+}
+.contenedor-act{
+    background-color: rgb(174, 223, 223);
+    width: 80%;
+    margin-left: 10%;
+}
+.btneliminar{
+    size: 10%;
+    margin-left:30%;
+    margin-right: 30%;
+}
